@@ -1,18 +1,19 @@
 package com.example.login;
 
 public class Truyen {
+    private int Id;
     private String Tentruyen;
     private String Theloai;
-    private int Hinh;
+    private byte[] Hinh;
     private String Tacgia;
     private String Sochuong;
     private String NoiDung;
-    private int Hinh1;
-    private int Hinh2;
-    private int Hinh3;
-    private int Hinh4;
-
-    public Truyen(String tentruyen, String theloai, int hinh, String tacgia, String sochuong, String noiDung,int hinh1,int hinh2,int hinh3,int hinh4) {
+    private byte[] Hinh1;
+    private byte[] Hinh2;
+    private byte[] Hinh3;
+    private byte[] Hinh4;
+    public Truyen(int id, String tentruyen, String theloai ,byte[]hinh, String tacgia, String sochuong, String noiDung,byte[]hinh1,byte[]hinh2,byte[]hinh3,byte[]hinh4) {
+        Id = id;
         Tentruyen = tentruyen;
         Theloai = theloai;
         Hinh = hinh;
@@ -23,6 +24,14 @@ public class Truyen {
         Hinh2 = hinh2;
         Hinh3 = hinh3;
         Hinh4 = hinh4;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 
     public String getTentruyen() {
@@ -40,49 +49,48 @@ public class Truyen {
     public void setTheloai(String theloai) {
         Theloai = theloai;
     }
+    public String getTacgia() {
+        return Tacgia;
+    }
 
-    public int getHinh() {
+    public byte[] getHinh() {
         return Hinh;
     }
 
-    public void setHinh(int hinh) {
+    public void setHinh(byte[] hinh) {
         Hinh = hinh;
     }
 
-    public int getHinh1() {
+    public byte[] getHinh1() {
         return Hinh1;
     }
 
-    public void setHinh1(int hinh1) {
+    public void setHinh1(byte[] hinh1) {
         Hinh1 = hinh1;
     }
 
-    public int getHinh2() {
+    public byte[] getHinh2() {
         return Hinh2;
     }
 
-    public void setHinh2(int hinh2) {
+    public void setHinh2(byte[] hinh2) {
         Hinh2 = hinh2;
     }
 
-    public int getHinh3() {
+    public byte[] getHinh3() {
         return Hinh3;
     }
 
-    public void setHinh3(int hinh3) {
+    public void setHinh3(byte[] hinh3) {
         Hinh3 = hinh3;
     }
 
-    public int getHinh4() {
+    public byte[] getHinh4() {
         return Hinh4;
     }
 
-    public void setHinh4(int hinh4) {
+    public void setHinh4(byte[] hinh4) {
         Hinh4 = hinh4;
-    }
-
-    public String getTacgia() {
-        return Tacgia;
     }
 
     public void setTacgia(String tacgia) {
@@ -104,4 +112,7 @@ public class Truyen {
     public void setNoiDung(String noiDung) {
         NoiDung = noiDung;
     }
+
+
+
 }

@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -24,17 +26,21 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
+    public static SQLiteDatabase DB;
     EditText editUser,editPass;
     Button btnlogin,btndangki;
     CheckBox CheckBox;
     ImageButton btncall,btnweb,btnfb;
+    ArrayList<Truyen> truyen ;
     String username,password;
-    public ArrayList<User> user = new ArrayList<User>();
     public Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh1);
+        //tao database
+        DB = Database.initDatabase(this,"truyentranh.db");
+        //tao bang
         Anhxa();
         ControlBtn();
     }
@@ -44,10 +50,6 @@ public class MainActivity extends AppCompatActivity {
                 btnlogin= findViewById(R.id.btlg);
                 btndangki= findViewById(R.id.btndk) ;
                 CheckBox =  findViewById(R.id.showpass);
-                user.add(new User("rit","rit"));
-                user.add(new User("thu","rit"));
-                user.add(new User("anh","rit"));
-                user.add(new User("hanh","rit"));
                 CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean b) {
@@ -59,9 +61,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     }
                 });
-
-
-
     }
     private void ControlBtn(){
         btncall=findViewById(R.id.btncall);
@@ -111,15 +110,25 @@ public class MainActivity extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
+
                 btndongy.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        user.add(new User(edtk.getText().toString(),edmk.getText().toString()));
-                        Toast.makeText(MainActivity.this,"Đăng kí thành công",Toast.LENGTH_SHORT).show();
-                        dialog.cancel();
+                        if(edtk.getText().length() != 0 && edmk.getText().length() != 0){
+                            if (checkusername(edtk.getText().toString())==false) {
+                                Toast.makeText(MainActivity.this,"Đăng kí thành công",Toast.LENGTH_SHORT).show();
+                                DB.execSQL("INSERT INTO user values('"+edtk.getText().toString()+"','"+edmk.getText().toString()+"')");
+                                dialog.cancel();
+                            }
+                            else {
+                                Toast.makeText(MainActivity.this,"Tài khoản đã tồn tại",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this,"Không được để trống",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-
             }
         });
        btnlogin.setOnClickListener(new View.OnClickListener()
@@ -127,28 +136,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 if(editUser.getText().length() != 0 && editPass.getText().length() != 0){
-                    if(isPassword(user,editUser.getText().toString(),editPass.getText().toString())==true){
+                    if(checkusernamePassword(editUser.getText().toString(),editPass.getText().toString())==true){
                            Toast.makeText(MainActivity.this,"Đăng nhập thành công",Toast.LENGTH_SHORT).show();
-                           username = editUser.getText().toString();
-                           password = editPass.getText().toString();
-                           Bundle bundle = new Bundle();
-                           bundle.putString("user", username);
-                           bundle.putString("pass", password);
                            intent = new Intent(MainActivity.this,MainActivity2.class);
-                           intent.putExtras(bundle);
                            startActivity(intent);
 
                     }
                     else {
                         Toast.makeText(MainActivity.this,"Tài khoản hoặc mật khẩu sai",Toast.LENGTH_SHORT).show();
                     }
+
+                }
+                else {
+                    Toast.makeText(MainActivity.this,"Vui lòng nhập tài khoản và mật khẩu",Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
-
-
     }
     private void gotoUrl(String s){
         Uri uri = Uri.parse(s);
@@ -156,13 +159,22 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-    public boolean isPassword(ArrayList<User> data, String username, String password) {
-        for (User i : data) {
-                if (i.getPassword().compareTo(password)==0 && i.getUsername().equalsIgnoreCase(username)) {
-                    return true;
-                }
-            }
-        return false;
+    public Boolean checkusernamePassword(String username , String password) {
+        Cursor cursor = DB.rawQuery("select * from user where username = ? and password =?" , new String[] {username, password});
+        if(cursor.getCount() > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
-
+    public Boolean checkusername(String username) {
+        Cursor cursor = DB.rawQuery("select * from user where username = ?" , new String[] {username});
+        if(cursor.getCount()>0){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
