@@ -34,22 +34,28 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh2);
         truyen = new ArrayList<Truyen>();
+        Anhxa();
         Cursor datatruyen = MainActivity.DB.rawQuery("SELECT * FROM truyen",null);
         while (datatruyen.moveToNext()){
+            byte[] imagebia = datatruyen.getBlob(3);
+            byte[] image1 = datatruyen.getBlob(7);
+            byte[] image2 = datatruyen.getBlob(8);
+            byte[] image3 = datatruyen.getBlob(9);
+            byte[] image4 = datatruyen.getBlob(10);
             truyen.add(new Truyen(
                     datatruyen.getInt(0),
                     datatruyen.getString(1),
                     datatruyen.getString(2),
-                    datatruyen.getBlob(3),
+                    imagebia,
                     datatruyen.getString(4),
                     datatruyen.getString(5),
                     datatruyen.getString(6),
-                    datatruyen.getBlob(7),
-                    datatruyen.getBlob(8),
-                    datatruyen.getBlob(9),
-                    datatruyen.getBlob(10)));
+                    image1,
+                    image2,
+                    image3,
+                    image4));
         }
-        Anhxa();
+        adapter.notifyDataSetChanged();
     }
     public  void DialogXoa(String tentruyen , int id){
         AlertDialog.Builder dialogXoa = new AlertDialog.Builder(this);
@@ -58,6 +64,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 MainActivity.DB.execSQL("DELETE FROM truyen WHERE Id = '"+id+"'");
+                truyen.remove(id-1);
                 Toast.makeText(MainActivity2.this,"Xóa Thành Công",Toast.LENGTH_SHORT).show();
             }
         });
@@ -103,4 +110,5 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
     }
+
 }

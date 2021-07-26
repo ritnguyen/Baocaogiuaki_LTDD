@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -31,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     Button btnlogin,btndangki;
     CheckBox CheckBox;
     ImageButton btncall,btnweb,btnfb;
-    ArrayList<Truyen> truyen ;
-    String username,password;
     public Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                         if(edtk.getText().length() != 0 && edmk.getText().length() != 0){
                             if (checkusername(edtk.getText().toString())==false) {
                                 Toast.makeText(MainActivity.this,"Đăng kí thành công",Toast.LENGTH_SHORT).show();
-                                DB.execSQL("INSERT INTO user values('"+edtk.getText().toString()+"','"+edmk.getText().toString()+"')");
+                                DB.execSQL("INSERT INTO user VALUES ('"+edtk.getText().toString()+"','"+edmk.getText().toString()+"')");
                                 dialog.cancel();
                             }
                             else {
@@ -177,4 +176,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
+
 }

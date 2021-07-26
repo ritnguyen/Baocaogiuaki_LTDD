@@ -25,18 +25,23 @@ public class MainActivity3 extends AppCompatActivity {
         truyen = new ArrayList<Truyen>();
         Cursor datatruyen = MainActivity.DB.rawQuery("SELECT * FROM truyen",null);
         while (datatruyen.moveToNext()){
+            byte[] imagebia = datatruyen.getBlob(3);
+            byte[] image1 = datatruyen.getBlob(7);
+            byte[] image2 = datatruyen.getBlob(8);
+            byte[] image3 = datatruyen.getBlob(9);
+            byte[] image4 = datatruyen.getBlob(10);
             truyen.add(new Truyen(
                     datatruyen.getInt(0),
                     datatruyen.getString(1),
                     datatruyen.getString(2),
-                    datatruyen.getBlob(3),
+                    imagebia,
                     datatruyen.getString(4),
                     datatruyen.getString(5),
                     datatruyen.getString(6),
-                    datatruyen.getBlob(7),
-                    datatruyen.getBlob(8),
-                    datatruyen.getBlob(9),
-                    datatruyen.getBlob(10)));
+                    image1,
+                    image2,
+                    image3,
+                    image4));
         }
         Anhxa();
         Controlbtn();

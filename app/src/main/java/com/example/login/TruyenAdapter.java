@@ -67,7 +67,8 @@ public class TruyenAdapter extends BaseAdapter {
         Truyen truyen = truyenList.get(i);
         holder.txtTentruyen.setText(truyen.getTentruyen());
         holder.txtTheLoai.setText(truyen.getTheloai());
-        Bitmap bitmap = BitmapFactory.decodeByteArray(truyen.getHinh(),0,truyen.getHinh().length);
+        byte[] userImage = truyen.getHinh();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(userImage,0,userImage.length);
         holder.imghinh.setImageBitmap(bitmap);
         //bắt dự kiên xóa sửa
         holder.edit.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +81,7 @@ public class TruyenAdapter extends BaseAdapter {
                 bundle.putString("tacgia",truyen.getTacgia());
                 bundle.putString("sochuong",truyen.getSochuong());
                 bundle.putString("noidung",truyen.getNoiDung());
+                bundle.putByteArray("Hinh", truyen.getHinh());
                 Intent intent = new Intent(context,ActivitySua.class);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
